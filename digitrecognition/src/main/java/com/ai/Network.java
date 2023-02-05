@@ -78,7 +78,7 @@ public class Network {
     }
 
     // calculates the output of the neural network for a given training data
-    public SimpleMatrix feedForward(SimpleMatrix trainingData) {
+    private SimpleMatrix feedForward(SimpleMatrix trainingData) {
         // repeats for each layer of the network
         for (int i = 0; i < numLayers - 1; i++) {
             // gets the current biases and weights
@@ -87,7 +87,7 @@ public class Network {
             // calculates the outputs of all the neurons of a specific layer
             // the output of a single neuron is:
             // sigmoid(Σj(weightsj * inputsj - bias))
-            // here the outputs are calculates with vectors
+            // here the outputs are calculated with vectors
             trainingData = sigmoid(weights.mult(trainingData).plus(biases));
         }
         return trainingData;
@@ -99,8 +99,31 @@ public class Network {
         return Arrays.asList(output);
     }
 
+    /* 
+    public void SGD(List<Data> trainingData, int epochs, int miniBatchSize, double eta, List<Data> testData) {
+        int nTest = 0;
+        if (testData != null) {
+            nTest = testData.size();
+        }
+        int n = trainingData.size();
+        for (int j = 0; j < epochs; j++) {
+            Collections.shuffle(trainingData);
+            List<List<Data>> miniBatches = new ArrayList<>();
+            for (int k = 0; k < n; k += miniBatchSize) {
+                miniBatches.add(trainingData.subList(k, Math.min(k + miniBatchSize, n)));
+            }
+            for (List<Data> miniBatch : miniBatches) {
+                updateMiniBatch(miniBatch, eta);
+            }
+            if (testData != null) {
+                System.out.println("Epoch " + j + ": " + evaluate(testData) + " / " + nTest);
+            } else {
+                System.out.println("Epoch " + j + " complete");
+            }
+        }
+    }
+    */
     
-
     public List<Integer> getSizes() {
         return sizes;
     }
