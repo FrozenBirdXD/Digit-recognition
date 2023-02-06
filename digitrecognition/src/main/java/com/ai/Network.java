@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.ejml.data.Matrix;
 import org.ejml.simple.SimpleMatrix;
 
 public class Network {
@@ -65,6 +64,7 @@ public class Network {
         return Arrays.asList(weightsArray);
     }
 
+    // applies the sigmoid function to every element in the matrix
     private SimpleMatrix sigmoid(SimpleMatrix input) {
         // create Matrix with same dimensions as input
         SimpleMatrix output = new SimpleMatrix(input.numRows(), input.numCols());
@@ -99,31 +99,56 @@ public class Network {
         return Arrays.asList(output);
     }
 
-    /* 
-    public void SGD(List<Data> trainingData, int epochs, int miniBatchSize, double eta, List<Data> testData) {
+    
+    public void SGD(List<SimpleMatrix> trainingData, int epochs, int miniBatchSize, double learningRate, List<SimpleMatrix> testData) {
+        /* 
         int nTest = 0;
         if (testData != null) {
             nTest = testData.size();
         }
+        */
         int n = trainingData.size();
+
+        // iterates over each epoch
         for (int j = 0; j < epochs; j++) {
+            // shuffle the training Data
             Collections.shuffle(trainingData);
-            List<List<Data>> miniBatches = new ArrayList<>();
+
+            // creates all mini Batches
+            List<List<SimpleMatrix>> miniBatches = new ArrayList<>();
             for (int k = 0; k < n; k += miniBatchSize) {
+                // add parts of the complete training data to a mini batch
                 miniBatches.add(trainingData.subList(k, Math.min(k + miniBatchSize, n)));
             }
-            for (List<Data> miniBatch : miniBatches) {
-                updateMiniBatch(miniBatch, eta);
+
+            // updates the weights and biases according to each mini Batch
+            for (List<SimpleMatrix> miniBatch : miniBatches) {
+                updateMiniBatch(miniBatch, learningRate);
             }
+            
+            /* 
             if (testData != null) {
                 System.out.println("Epoch " + j + ": " + evaluate(testData) + " / " + nTest);
             } else {
                 System.out.println("Epoch " + j + " complete");
             }
+            */
         }
     }
-    */
-    
+
+    // update weights and biases per mini batch using backprop and stochastic gradient descent
+    private void updateMiniBatch(List<SimpleMatrix> miniBatch, double learningRate) {
+
+    }
+
+    // derivative sigmoid function
+
+    // derivative cost function
+
+    // backpropagation
+
+    // evaluate if the output of the network is correct
+
     public List<Integer> getSizes() {
         return sizes;
     }

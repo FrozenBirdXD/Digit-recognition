@@ -22,7 +22,7 @@ public class App {
         Network network = new Network(sizes);
         
         Dataset data = new Dataset();
-        int index = 6345;
+        int index = 435;
         
         try {
             double[][] imageData = data.readImages(TRAIN_IMAGES_URL);
