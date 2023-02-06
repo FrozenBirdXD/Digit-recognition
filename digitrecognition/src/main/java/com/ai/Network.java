@@ -1,14 +1,20 @@
 package com.ai;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import org.ejml.simple.SimpleMatrix;
 
-public class Network {
+public class Network implements Serializable{
     private int numLayers;
     private List<Integer> sizes;
     private List<SimpleMatrix> biases;
@@ -20,6 +26,39 @@ public class Network {
         this.biases = initBiases(sizes);
         this.weights = initWeights(sizes);
     }
+
+    public void saveSettings() throws IOException {
+        FileWriter writer = new FileWriter("weights-biases.txt");
+
+        // saves the biases first 
+        // a row for a single bias
+        for (SimpleMatrix bias : biases) {
+            for (int i = 0; i < bias.numRows(); i++) {
+                for (int j = 0; j < bias.numCols(); j++) {
+                    writer.write(bias.get(i, j) + " ");
+                }
+                writer.write("\n");
+            }
+        }
+        writer.write("\n");
+
+        // saves the weights 
+        // a row for weights of the connections to a neuron starting from the second layer
+        for (SimpleMatrix weight : weights) {
+            for (int i = 0; i < weight.numRows(); i++) {
+                for (int j = 0; j < weight.numCols(); j++) {
+                    writer.write(weight.get(i, j) + " ");
+                }
+                writer.write("\n");
+            }
+        }
+        writer.close();
+    }
+
+    public void readSettings() throws FileNotFoundException {
+        // reads the weights and biases from the weights-biases.txt file
+        Scanner scanner = new Scanner(new File("weights-biases.txt"));
+    }   
 
     // sets all of the biases for every neuron except for the input layer
     private List<SimpleMatrix> initBiases(List<Integer> sizes) {

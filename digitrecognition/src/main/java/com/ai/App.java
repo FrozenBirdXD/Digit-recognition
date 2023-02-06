@@ -34,6 +34,8 @@ public class App {
 
             SimpleMatrix sampleInput = new SimpleMatrix(imageDataSingle);
             System.out.println(network.calculateOutput(sampleInput));
+
+            network.saveSettings();
         } catch (IOException e) {
             e.printStackTrace();
         }
