@@ -54,11 +54,55 @@ public class Network implements Serializable{
         }
         writer.close();
     }
-
+    
     public void readSettings() throws FileNotFoundException {
         // reads the weights and biases from the weights-biases.txt file
         Scanner scanner = new Scanner(new File("weights-biases.txt"));
-    }   
+
+        // reads biases
+        SimpleMatrix[] biasesRead = new SimpleMatrix[sizes.size() - 1];
+        for (int i = 1; i < sizes.size(); i++) {
+            SimpleMatrix bias = new SimpleMatrix(sizes.get(i), 1);
+            for (int j = 0; j < bias.numRows(); j++) {
+                // reads the next token and stores it as a string
+                String input = scanner.next();
+                // if input is a double
+                if (input.matches("-?\\d+(\\.\\d+)?")) {
+                    double value = Double.parseDouble(input);
+                    bias.set(j, 0, value);
+                } else {
+                    System.err.println("Error reading double value at position " + i + ", " + j + ": " + input);
+                }
+            }
+            biasesRead[i - 1] = bias;
+        }
+        // saves the read biases to the current biases
+        this.biases = Arrays.asList(biasesRead);
+
+        // reads weights
+        SimpleMatrix[] weightsRead = new SimpleMatrix[sizes.size() - 1];
+        for (int i = 0; i < sizes.size() - 1; i++) {
+            SimpleMatrix weight = new SimpleMatrix(sizes.get(i + 1), sizes.get(i));
+            for (int j = 0; j < weight.numRows(); j++) {
+                for (int k = 0; k < weight.numCols(); k++) {
+                    // reads the next token and stores it as a string
+                    String input = scanner.next();
+                    // if input is a double
+                    if (input.matches("-?\\d+(\\.\\d+)?")) {
+                        double value = Double.parseDouble(input);
+                        weight.set(j, k, value);
+                    } else {
+                        System.err.println("Error reading double value at position " + i + ", " + j + ": " + input);
+                    }  
+                }
+            }
+            weightsRead[i] = weight;
+        }
+        // saves the read weights to the current weights
+        this.weights = Arrays.asList(weightsRead); 
+
+        scanner.close();
+    } 
 
     // sets all of the biases for every neuron except for the input layer
     private List<SimpleMatrix> initBiases(List<Integer> sizes) {
