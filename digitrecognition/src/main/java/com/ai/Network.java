@@ -27,10 +27,26 @@ public class Network implements Serializable{
         this.weights = initWeights(sizes);
     }
 
+    public Network() {
+        // empty constructor for when params don't have to be created
+    }
+
     public void saveSettings() throws IOException {
         FileWriter writer = new FileWriter("weights-biases.txt");
 
-        // saves the biases first 
+        // saves numLayers
+        writer.write(numLayers + " ");
+        writer.write("\n");
+        writer.write("\n");
+
+        // saves sizes
+        for (Integer num : sizes) {
+            writer.write(num + " ");
+        }
+        writer.write("\n");
+        writer.write("\n");
+
+        // saves the biases 
         // a row for a single bias
         for (SimpleMatrix bias : biases) {
             for (int i = 0; i < bias.numRows(); i++) {
@@ -43,7 +59,7 @@ public class Network implements Serializable{
         writer.write("\n");
 
         // saves the weights 
-        // a row for weights of the connections to a neuron starting from the second layer
+        // a row for weights of the connections to a neuron starting starting from the second layer
         for (SimpleMatrix weight : weights) {
             for (int i = 0; i < weight.numRows(); i++) {
                 for (int j = 0; j < weight.numCols(); j++) {
@@ -58,6 +74,29 @@ public class Network implements Serializable{
     public void readSettings() throws FileNotFoundException {
         // reads the weights and biases from the weights-biases.txt file
         Scanner scanner = new Scanner(new File("weights-biases.txt"));
+
+        // reads numLayers
+        String inputNumLayers = scanner.next();
+        // if input is an int
+        if (inputNumLayers.matches("^-?\\d+$")) {
+            int readNumLayers = Integer.parseInt(inputNumLayers);
+            this.numLayers = readNumLayers;
+        } else {
+            System.err.println("Error reading double value at position 1: " + inputNumLayers);
+        }
+
+        // reads sizes
+        List<Integer> sizesRead = new ArrayList<Integer>();
+        for (int i = 0; i < numLayers; i++) {
+            String inputSizes = scanner.next();
+            // if input is an int
+            if (inputSizes.matches("^-?\\d+$")) {
+                sizesRead.add(Integer.parseInt(inputSizes));
+            } else {
+                System.err.println("Error reading double value at position 1: " + inputSizes);
+            }
+        }
+        this.sizes = sizesRead;
 
         // reads biases
         SimpleMatrix[] biasesRead = new SimpleMatrix[sizes.size() - 1];
@@ -92,7 +131,7 @@ public class Network implements Serializable{
                         double value = Double.parseDouble(input);
                         weight.set(j, k, value);
                     } else {
-                        System.err.println("Error reading double value at position " + i + ", " + j + ": " + input);
+                        System.err.println("Error reading double value at position " + i + ", " + j + ", " + k + ": " + input);
                     }  
                 }
             }
@@ -231,6 +270,10 @@ public class Network implements Serializable{
     // backpropagation
 
     // evaluate if the output of the network is correct
+
+    public int getNumLayers() {
+        return numLayers;
+    }
 
     public List<Integer> getSizes() {
         return sizes;
