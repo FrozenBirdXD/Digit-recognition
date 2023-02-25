@@ -17,8 +17,7 @@ import org.ejml.simple.SimpleMatrix;
 public class Network implements Serializable{
     private int numLayers;
     private List<Integer> sizes;
-    private List<SimpleMatrix> biases;
-    private List<SimpleMatrix> weights;
+    private List<SimpleMatrix> biases, weights;
 
     public Network(List<Integer> sizes) {
         this.numLayers = sizes.size();
@@ -82,7 +81,7 @@ public class Network implements Serializable{
             int readNumLayers = Integer.parseInt(inputNumLayers);
             this.numLayers = readNumLayers;
         } else {
-            System.err.println("Error reading double value at position 1: " + inputNumLayers);
+            System.err.println("Error: " + inputNumLayers);
         }
 
         // reads sizes
@@ -93,7 +92,7 @@ public class Network implements Serializable{
             if (inputSizes.matches("^-?\\d+$")) {
                 sizesRead.add(Integer.parseInt(inputSizes));
             } else {
-                System.err.println("Error reading double value at position 1: " + inputSizes);
+                System.err.println("Error: " + inputSizes);
             }
         }
         this.sizes = sizesRead;
@@ -110,7 +109,7 @@ public class Network implements Serializable{
                     double value = Double.parseDouble(input);
                     bias.set(j, 0, value);
                 } else {
-                    System.err.println("Error reading double value at position " + i + ", " + j + ": " + input);
+                    System.err.println("Error at: " + i + ", " + j + ": " + input);
                 }
             }
             biasesRead[i - 1] = bias;
@@ -131,7 +130,7 @@ public class Network implements Serializable{
                         double value = Double.parseDouble(input);
                         weight.set(j, k, value);
                     } else {
-                        System.err.println("Error reading double value at position " + i + ", " + j + ", " + k + ": " + input);
+                        System.err.println("Error at: " + i + ", " + j + ", " + k + ": " + input);
                     }  
                 }
             }
@@ -194,6 +193,21 @@ public class Network implements Serializable{
         for (int i = 0; i < input.numRows(); i++) {
             for (int j = 0; j < input.numCols(); j++) {
                 output.set(i, j, 1 / (1 + Math.exp(-input.get(i, j))));     // sigmoid function
+            }
+        }
+        return output;
+    }
+
+    // applies the derivative of the sigmoid function to every element in the matrix
+    // needed for the backpropagation algorithm
+    private SimpleMatrix dsigmoid(SimpleMatrix input) {
+        // create Matrix with same dimensions as input
+        SimpleMatrix output = new SimpleMatrix(input.numRows(), input.numCols());
+        // iterates over all of the rows and colums and applies the derivative of the sigmoid function to every element in the matrix
+        for (int i = 0; i < input.numRows(); i++) {
+            for (int j = 0; j < input.numCols(); j++) {
+                double sigmoid = 1 / (1 + Math.exp(-input.get(i, j)));
+                output.set(i, j, sigmoid * (1 - sigmoid));     // derivative of sigmoid function => derivative(x) = sigmoid(x) * (1 - sigmoid(x))
             }
         }
         return output;
@@ -262,8 +276,6 @@ public class Network implements Serializable{
     private void updateMiniBatch(List<SimpleMatrix> miniBatch, double learningRate) {
 
     }
-
-    // derivative sigmoid function
 
     // derivative cost function
 
