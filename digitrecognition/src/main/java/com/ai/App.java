@@ -19,7 +19,7 @@ public class App {
         sizes.add(5);
         sizes.add(3);
         sizes.add(10);
-        Network network = new Network(sizes);
+        Network network = new Network();
         
         Dataset data = new Dataset();
         int index = 435;
@@ -35,15 +35,16 @@ public class App {
             // SimpleMatrix sampleInput = new SimpleMatrix(imageDataSingle);
             // System.out.println(network.calculateOutput(sampleInput));
 
-            
+            System.out.println(network.getNumLayers());
             System.out.println(network.getSizes());
             System.out.println(network.getBiases());
             System.out.println("gg");
             System.out.println(network.getWeights());
 
-            
+            // network.saveSettings();
 
             network.readSettings();
+            System.out.println(network.getNumLayers());
             System.out.println(network.getSizes());
             System.out.println(network.getBiases());
             System.out.println("gg");
