@@ -1,5 +1,7 @@
 package com.ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Matrix {
@@ -130,6 +132,30 @@ public class Matrix {
         for (int i = 0; i < result.rows; i++) {
             for (int j = 0; j < result.columns; j++) {
                 result.values[j][i] = matrix.values[i][j];
+            }
+        }
+        return result;
+    }
+
+    // converts an array to a matrix
+    public static Matrix arrayToMatrix(double[] array) {
+        // creates the new matrix
+        Matrix result = new Matrix(array.length, 1);
+        // loops through every element in the array
+        for (int i = 0; i < array.length; i++) {
+            result.values[i][0] = array[i];
+        }
+        return result;
+    }
+
+    // returns the current matrix object as an array
+    public List<Double> matrixToArray() {
+        // creates the new array
+        List<Double> result = new ArrayList<Double>();
+        // loops through all of the rows and columns
+        for (int i = 0; i < this.rows; i++) {
+            for(int j = 0; j < this.columns; j++) {
+                result.add(this.values[i][j]);
             }
         }
         return result;
