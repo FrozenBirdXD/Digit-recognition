@@ -12,6 +12,11 @@ public class Matrix {
         this.values = new double[rows][columns];
         this.rows = rows;
         this.columns = columns;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                values[i][j] = Math.random() * 2 - 1;
+            }
+        }
     }
 
     // initializes the values randomly
@@ -63,6 +68,8 @@ public class Matrix {
     public void add(Matrix matrix) {
         if (this.columns != matrix.columns || this.rows != matrix.rows) {
             System.err.println("Matrices don't have the same dimensions!");
+            System.err.println(columns + " and " + matrix.columns);
+            System.err.println(rows + " and " + matrix.rows);
         } else {
             // loops through all of the rows and columns
             for (int i = 0; i < this.rows; i++) {
@@ -127,14 +134,13 @@ public class Matrix {
     // returns a new matrix with the number of rows and columns swapped
     public static Matrix transpose(Matrix matrix) {
         // creates the new matrix
-        Matrix result = new Matrix(matrix.rows, matrix.columns);
-        // loops through all of the rows and columns
-        for (int i = 0; i < result.rows; i++) {
-            for (int j = 0; j < result.columns; j++) {
-                result.values[j][i] = matrix.values[i][j];
+        Matrix temp = new Matrix(matrix.columns, matrix.rows);
+        for (int i = 0; i < matrix.rows; i++) {
+            for (int j = 0; j < matrix.columns; j++) {
+                temp.values[j][i] = matrix.values[i][j];
             }
         }
-        return result;
+        return temp;
     }
 
     // converts an array to a matrix
@@ -159,5 +165,13 @@ public class Matrix {
             }
         }
         return result;
+    }
+
+    public int getRows() {
+        return this.rows;
+    }
+
+    public int getColumns() {
+        return this.columns;
     }
 }
