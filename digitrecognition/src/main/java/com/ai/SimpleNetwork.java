@@ -1,5 +1,7 @@
 package com.ai;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class SimpleNetwork {
@@ -117,6 +119,43 @@ public class SimpleNetwork {
         return outputInputs.matrixToArray();
     }
     
+    public void saveParams() throws IOException {
+        FileWriter writer = new FileWriter("weights-biases.txt");
+
+        for (int i = 0; i < this.weightsInputHidden.getRows(); i++) {
+            for (int j = 0; j < this.weightsInputHidden.getColumns(); j++) {
+                writer.write(this.weightsInputHidden.getValues()[i][j] + " ");
+            }
+            writer.write("\n");
+        }
+        writer.write("\n");
+
+        for (int i = 0; i < this.weightsHiddenOutput.getRows(); i++) {
+            for (int j = 0; j < this.weightsHiddenOutput.getColumns(); j++) {
+                writer.write(this.weightsHiddenOutput.getValues()[i][j] + " ");
+            }
+            writer.write("\n");
+        }
+        writer.write("\n");
+
+        for (int i = 0; i < this.biasesHidden.getRows(); i++) {
+            for (int j = 0; j < this.biasesHidden.getColumns(); j++) {
+                writer.write(this.biasesHidden.getValues()[i][j] + " ");
+            }
+            writer.write("\n");
+        }
+        writer.write("\n");
+
+        for (int i = 0; i < this.biasesOutput.getRows(); i++) {
+            for (int j = 0; j < this.biasesOutput.getColumns(); j++) {
+                writer.write(this.biasesOutput.getValues()[i][j] + " ");
+            }
+            writer.write("\n");
+        }
+        writer.write("\n");
+
+        writer.close();
+    }
 }
 
 
