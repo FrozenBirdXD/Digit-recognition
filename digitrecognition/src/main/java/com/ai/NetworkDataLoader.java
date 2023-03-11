@@ -30,12 +30,12 @@ public class NetworkDataLoader {
         System.out.println("Image size: " + trainingImages[0].length);
         System.out.println("Number of classes(different label values): " + countClasses(trainingLabels));
 
-        SimpleNetwork network = new SimpleNetwork(784, 100, 10, 0.01);
+        SimpleNetwork network = new SimpleNetwork(784, 200, 10, 0.03);
         // train neural network with the training data
-        // network.fit(trainingImages, oneHotEncode(trainingLabels), 15000);
+        network.fit(trainingImages, oneHotEncode(trainingLabels), 25000);
 
-        network.readParams();
-        // network.saveParams();
+        // network.readParams();
+        network.saveParams();
 
         // predicts the first 50 images and prints them
         for (int i = 0; i < 50; i++) {

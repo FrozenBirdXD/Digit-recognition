@@ -79,29 +79,29 @@ public class SimpleNetwork {
         gradient.multiply(this.learningRateEta);
         
         // calculate the delta for the weights between the hidden and output layers
-        Matrix hidden_T = Matrix.transpose(hidden);
-        Matrix who_delta =  Matrix.multiply(gradient, hidden_T);
+        Matrix hiddenTranspose = Matrix.transpose(hidden);
+        Matrix weightsHiddenOutputDelta =  Matrix.multiply(gradient, hiddenTranspose);
         
         // update the weights and biases between the hidden and output layers
-        this.weightsHiddenOutput.add(who_delta);
+        this.weightsHiddenOutput.add(weightsHiddenOutputDelta);
         this.biasesOutput.add(gradient);
         
         // calculate the hidden layer error by multiplying the output layer error with the weights
-        Matrix who_T = Matrix.transpose(this.weightsHiddenOutput);
-        Matrix hidden_errors = Matrix.multiply(who_T, error);
+        Matrix weightsHiddenOutputTranspose = Matrix.transpose(this.weightsHiddenOutput);
+        Matrix hiddenErrors = Matrix.multiply(weightsHiddenOutputTranspose, error);
         
         // calculate the gradient of the hidden layer using the sigmoid derivative of the hidden layer values
-        Matrix h_gradient = hidden.sigmoidDeriv();
-        h_gradient.multiply(hidden_errors);
-        h_gradient.multiply(this.learningRateEta);
+        Matrix hiddenGradient = hidden.sigmoidDeriv();
+        hiddenGradient.multiply(hiddenErrors);
+        hiddenGradient.multiply(this.learningRateEta);
         
         // calculate the delta for the weights between the input and hidden layers
-        Matrix i_T = Matrix.transpose(input);
-        Matrix wih_delta = Matrix.multiply(h_gradient, i_T);
+        Matrix inputTranspose = Matrix.transpose(input);
+        Matrix weightsInputHiddenDelta = Matrix.multiply(hiddenGradient, inputTranspose);
         
         // update the weights and biases between the input and hidden layers
-        this.weightsInputHidden.add(wih_delta);
-        this.biasesHidden.add(h_gradient);
+        this.weightsInputHidden.add(weightsInputHiddenDelta);
+        this.biasesHidden.add(hiddenGradient);
     }
 
     /**
