@@ -188,7 +188,57 @@ public class SimpleNetwork {
         writer.close();
     }
 
-    
+    /**
+     * Reads the network parameters from the file and applies them to the current network
+     * @throws IOException
+     */
+    public void readParams() throws IOException {
+        // reads file
+        Scanner scanner = new Scanner(new File("weights-biases.txt"));
+
+        // saves the values of the read parameters for each instance variable
+        double[][] values = new double[this.weightsInputHidden.getRows()][this.weightsInputHidden.getColumns()];
+
+        for (int i = 0; i < this.weightsInputHidden.getRows(); i++) {
+            for (int j = 0; j < this.weightsInputHidden.getColumns(); j++) {
+                values[i][j] = Double.parseDouble(scanner.next());
+            }
+        }
+        // applies the read values to weightsInputHidden
+        this.weightsInputHidden.setValues(values);
+
+        values = new double[this.weightsHiddenOutput.getRows()][this.weightsHiddenOutput.getColumns()];
+
+        for (int i = 0; i < this.weightsHiddenOutput.getRows(); i++) {
+            for (int j = 0; j < this.weightsHiddenOutput.getColumns(); j++) {
+                values[i][j] = Double.parseDouble(scanner.next());
+            }
+        }
+        // applies the read values to weightsHiddenOutput
+        this.weightsHiddenOutput.setValues(values);
+
+        values = new double[biasesHidden.getRows()][this.biasesHidden.getColumns()];
+
+        for (int i = 0; i < this.biasesHidden.getRows(); i++) {
+            for (int j = 0; j < this.biasesHidden.getColumns(); j++) {
+                values[i][j] = Double.parseDouble(scanner.next());
+            }
+        }
+        // applies the read values to biasesHidden
+        this.biasesHidden.setValues(values);
+
+        values = new double[biasesOutput.getRows()][this.biasesOutput.getColumns()];
+
+        for (int i = 0; i < this.biasesOutput.getRows(); i++) {
+            for (int j = 0; j < this.biasesOutput.getColumns(); j++) {
+                values[i][j] = Double.parseDouble(scanner.next());
+            }
+        }
+        // applies the read values to biasesOutput
+        this.biasesOutput.setValues(values);
+
+        scanner.close();
+    }
 }
 
 
