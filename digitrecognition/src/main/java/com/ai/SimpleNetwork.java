@@ -140,6 +140,25 @@ public class SimpleNetwork {
         // convert output matrix with activations to array
         return outputInputs.matrixToArray();
     }
+
+    /**
+     * Evaluates the biggest number in a list and returns the index = the number the network predicts
+     * @param list A list of Doubles with the networks prediction
+     * @return Returns the number the network predicted
+     */
+    public int getPredictionInt(List<Double> list) {
+        int indexBiggest = 0;
+        Double result = 0.0;
+        // sorts out the biggest number
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) > result) {
+                indexBiggest = i;
+                result = list.get(i);
+            }
+        }
+
+        return indexBiggest;
+    }
     
     /**
      * Saves the parameters of the network to a text file
