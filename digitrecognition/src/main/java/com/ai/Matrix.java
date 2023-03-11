@@ -167,6 +167,10 @@ public class Matrix {
         return result;
     }
 
+    public double[][] getValues() {
+        return this.values;
+    }
+
     public int getRows() {
         return this.rows;
     }
