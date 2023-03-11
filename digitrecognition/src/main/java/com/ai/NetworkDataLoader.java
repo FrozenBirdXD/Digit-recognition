@@ -37,13 +37,31 @@ public class NetworkDataLoader {
         network.readParams();
         // network.saveParams();
 
-        // predicts the first 30 images
-        for (int i = 0; i < 30; i++) {
-            List<Double> result = network.predict(trainingImages[i]);
+        // predicts the first 50 images and prints them
+        for (int i = 0; i < 50; i++) {
+            List<Double> result = network.predict(testImages[i]);
             System.out.println(result.toString());
-            System.out.println(trainingLabels[i]);
+            System.out.println(testLabels[i]);
         }
 
+        // overall evaluation
+        int numCorrect = 0;
+        int numTested = 0;
+        for (int i = 0; i < testLabels.length; i++) {
+            if (network.getPredictionInt(network.predict(testImages[i])) == testLabels[i]) {
+                numCorrect++;
+                numTested++;
+            } else {
+                numTested++;
+            }
+        }
+
+        System.out.println("Amount of correctly identified digits: " + numCorrect);
+        System.out.println("Amount of tested digits: " + numTested);
+        System.out.println("Percentage correct: " + numCorrect / (double) numTested);
+        System.out.println();
+        System.out.println(network.getPredictionInt(network.predict(testImages[0])));
+        System.out.println(testLabels[0]);
     }
 
     // load the training data from the file
