@@ -12,11 +12,6 @@ public class Matrix {
         this.values = new double[rows][columns];
         this.rows = rows;
         this.columns = columns;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                values[i][j] = Math.random() * 2 - 1;
-            }
-        }
     }
 
     // initializes the values randomly
@@ -169,6 +164,10 @@ public class Matrix {
 
     public double[][] getValues() {
         return this.values;
+    }
+
+    public void setValues(double[][] values) {
+        this.values = values;
     }
 
     public int getRows() {
