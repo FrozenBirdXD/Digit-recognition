@@ -1,8 +1,10 @@
 package com.ai;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class SimpleNetwork {
     // matricies with weights and biases: weightsInputHidden = weights of the connections between the neurons of the Input layer and the Hidden layer ...
@@ -10,7 +12,7 @@ public class SimpleNetwork {
     private double learningRateEta;
     
     /**
-     * Creates a neural network with the given amount of neurons
+     * Creates a neural network with the given amount of neurons and initializes them with random values
      * @param inputNeurons amount of neurons for input layer
      * @param hiddenNeurons amount of neurons for hidden layer
      * @param outputNeurons amount of neurons for output layer
@@ -20,6 +22,26 @@ public class SimpleNetwork {
         this.learningRateEta = learningRate;
 
         // initialize matricies with random values 
+        this.weightsInputHidden = new Matrix(hiddenNeurons, inputNeurons);
+        this.weightsInputHidden.initRandomValues();
+        this.weightsHiddenOutput = new Matrix(outputNeurons, hiddenNeurons);
+        this.weightsHiddenOutput.initRandomValues();
+
+        this.biasesHidden = new Matrix(hiddenNeurons, 1);
+        this.biasesHidden.initRandomValues();
+        this.biasesOutput = new Matrix(outputNeurons, 1);
+        this.biasesOutput.initRandomValues();
+    }
+
+    /**
+     * Creates a neural network with the given amount of neurons without any random parameters
+     * @param inputNeurons amount of neurons for input layer
+     * @param hiddenNeurons amount of neurons for hidden layer
+     * @param outputNeurons amount of neurons for output layer
+     */
+    public SimpleNetwork(int inputNeurons, int hiddenNeurons, int outputNeurons) {
+
+        // creates matricies with correct size
         this.weightsInputHidden = new Matrix(hiddenNeurons, inputNeurons);
         this.weightsHiddenOutput = new Matrix(outputNeurons, hiddenNeurons);
 
@@ -119,9 +141,15 @@ public class SimpleNetwork {
         return outputInputs.matrixToArray();
     }
     
+    /**
+     * Saves the parameters of the network to a text file
+     * @throws IOException
+     */
     public void saveParams() throws IOException {
+        // writes to file
         FileWriter writer = new FileWriter("weights-biases.txt");
 
+        // writes weightsInputHidden params
         for (int i = 0; i < this.weightsInputHidden.getRows(); i++) {
             for (int j = 0; j < this.weightsInputHidden.getColumns(); j++) {
                 writer.write(this.weightsInputHidden.getValues()[i][j] + " ");
@@ -130,6 +158,7 @@ public class SimpleNetwork {
         }
         writer.write("\n");
 
+        // writes weightsHiddenOutput params
         for (int i = 0; i < this.weightsHiddenOutput.getRows(); i++) {
             for (int j = 0; j < this.weightsHiddenOutput.getColumns(); j++) {
                 writer.write(this.weightsHiddenOutput.getValues()[i][j] + " ");
@@ -138,6 +167,7 @@ public class SimpleNetwork {
         }
         writer.write("\n");
 
+        // writes biasesHidden params
         for (int i = 0; i < this.biasesHidden.getRows(); i++) {
             for (int j = 0; j < this.biasesHidden.getColumns(); j++) {
                 writer.write(this.biasesHidden.getValues()[i][j] + " ");
@@ -146,6 +176,7 @@ public class SimpleNetwork {
         }
         writer.write("\n");
 
+        // writes biasesOutput params
         for (int i = 0; i < this.biasesOutput.getRows(); i++) {
             for (int j = 0; j < this.biasesOutput.getColumns(); j++) {
                 writer.write(this.biasesOutput.getValues()[i][j] + " ");
@@ -156,6 +187,8 @@ public class SimpleNetwork {
 
         writer.close();
     }
+
+    
 }
 
 
