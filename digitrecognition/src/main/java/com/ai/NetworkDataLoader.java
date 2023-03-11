@@ -32,9 +32,10 @@ public class NetworkDataLoader {
 
         SimpleNetwork network = new SimpleNetwork(784, 100, 10, 0.01);
         // train neural network with the training data
-        network.fit(trainingImages, oneHotEncode(trainingLabels), 15000);
+        // network.fit(trainingImages, oneHotEncode(trainingLabels), 15000);
 
-        network.saveParams();
+        network.readParams();
+        // network.saveParams();
 
         // predicts the first 30 images
         for (int i = 0; i < 30; i++) {
