@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-import org.ejml.data.ZMatrix;
-
 public class SimpleNetwork {
     // matricies with weights and biases: weightsInputHidden = weights of the connections between the neurons of the Input layer and the Hidden layer ...
     private Matrix weightsInputHidden, weightsHiddenOutput, biasesHidden, biasesOutput;
