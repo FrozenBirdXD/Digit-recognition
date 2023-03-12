@@ -25,10 +25,11 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
     <dependency>
-      <groupId>org.ejml</groupId>
-      <artifactId>ejml-simple</artifactId>
-      <version>0.41.1</version>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.5.4</version>
     </dependency>
   </dependencies>
 
