@@ -2,6 +2,7 @@ package com.ai;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,13 +69,11 @@ public class NetworkDataLoader {
         // find the optimal hyperparameters
         // list with each parameter to test
 
-        double[] learningRates = {0.01, 0.02, 0.05, 0.1, 0.15, 0.2};
-        int[] hiddenNeurons = {16, 64, 128, 256};
-        int[] epochs = {5000, 10000, 15000, 20000};
+        FileWriter writer = new FileWriter("training.txt");
 
-        // double[] learningRates = {0.01, 0.02};
-        // int[] hiddenNeurons = {16, 100};
-        // int[] epochs = {5000};
+        List<Double> learningRates = Arrays.asList(0.02, 0.05, 0.1, 0.15, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35);
+        List<Integer> hiddenNeurons = Arrays.asList(64, 128, 256);
+        List<Integer> epochs = Arrays.asList(5000, 10000, 15000, 17500, 20000, 22500, 25000, 27500, 30000);
 
         List<Double> accuracyList = new ArrayList<>();
         List<Double> lossList = new ArrayList<>();
@@ -83,25 +82,26 @@ public class NetworkDataLoader {
         double biggestAccuracy = 0;
         double[] bestParams = new double[3];
 
+        // interates over each learning rate, hidden neuron amount and epochs
         for (double learningRate : learningRates) {
             for (int hiddenNeuron : hiddenNeurons) {
                 for (int epoch : epochs) {
                     // initializes and train your neural network with the current hyperparameters
                     SimpleNetwork network = new SimpleNetwork(784, hiddenNeuron, 10, learningRate);
                     network.fit(trainingImages, oneHotEncode(trainingLabels), epoch);
-        
+            
                     // records the metrics for the current hyperparameters
                     double accuracy = network.calculateAccuracy(testImages, testLabels);
                     double loss = network.calculateLoss(testImages, oneHotEncode(testLabels));
                     double[] precision = network.calculatePrecision(testImages, testLabels);
-        
+            
                     // adds the metrics to the lists
                     accuracyList.add(accuracy);
                     lossList.add(loss);
                     precisionList.add(precision);
 
                     if (accuracy > biggestAccuracy) {
-                        // network.saveParams();
+                        network.saveParams();
                         biggestAccuracy = accuracy;
                         bestParams[0] = learningRate;
                         bestParams[1] = hiddenNeuron;
@@ -110,15 +110,25 @@ public class NetworkDataLoader {
 
                     // prints the result of each hyperparameter
                     System.out.println("Learning rate: " + learningRate + ", Hidden neurons: " + hiddenNeuron + ", Epochs: " + epoch + ", Accuracy: " + accuracy + ", Loss: " + loss);
-                    System.out.println("Precision: " + Arrays.toString(precision));
+                    writer.write("Learning rate: " + learningRate + ", Hidden neurons: " + hiddenNeuron + ", Epochs: " + epoch + ", Accuracy: " + accuracy + ", Loss: " + loss);
+                    writer.write("\n");
+                    // System.out.println("Precision: " + Arrays.toString(precision));
                 }
             }
         }
+        System.out.println();
         System.out.println(biggestAccuracy);
         System.out.println("Best params: " + Arrays.toString(bestParams));
-        System.out.println(accuracyList);
-        System.out.println(lossList);
-        System.out.println(precisionList);
+        // System.out.println(accuracyList);
+        // System.out.println(lossList);
+        // System.out.println(precisionList);
+
+        writer.write("\n");
+        writer.write("\n");
+        writer.write("Biggest accuracy: " + String.valueOf(biggestAccuracy));
+        writer.write("\n");
+        writer.write("Best params: " + String.valueOf(Arrays.toString(bestParams)));
+        writer.close();
     }
 
     // load the training data from the file
