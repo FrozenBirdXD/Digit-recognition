@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.ejml.data.ZMatrix;
+
 public class SimpleNetwork {
     // matricies with weights and biases: weightsInputHidden = weights of the connections between the neurons of the Input layer and the Hidden layer ...
     private Matrix weightsInputHidden, weightsHiddenOutput, biasesHidden, biasesOutput;
@@ -258,6 +260,96 @@ public class SimpleNetwork {
 
         scanner.close();
     }
+
+    /**
+     * Calculates the Accuracy of the network on a set of test data
+     * @param testImages a 2d array with test image data
+     * @param testLabels an array with test image labels
+     * @return return the accuracy of the network
+     */
+    public double calculateAccuracy(double[][] testImages, int[] testLabels) {
+        int numCorrect = 0;
+    
+        for (int i = 0; i < testImages.length; i++) {
+            double[] input = testImages[i];
+
+            List<Double> output = predict(input);
+            int predictedDigit = getPredictionInt(output);
+    
+            // if predicted number is the actual number
+            if (predictedDigit == testLabels[i]) {
+                numCorrect++;
+            }
+        }
+    
+        double accuracy = numCorrect / (double) testLabels.length;
+        return accuracy;
+    }
+
+    /**
+     * Calculates the loss of the network with given test data
+     * @param testImages a 2d array with test image data
+     * @param testLabels a 2d array with oneHotEncoded test label data
+     * @return returns the total loss of the network
+     */
+    public double calculateLoss(double[][] testImages, double[][] testLabels) {
+        double totalLoss = 0.0;
+    
+        for (int i = 0; i < testImages.length; i++) {
+            double[] target = testLabels[i];
+
+            double[] input = testImages[i];
+            List<Double> output = predict(input);
+    
+            // calculates the mean squared error between the model's output and the true label
+            double loss = 0.0;
+            for (int j = 0; j < output.size(); j++) {
+                loss += Math.pow(output.get(j) - target[j], 2);
+            }
+            loss /= output.size();
+    
+            totalLoss += loss;
+        }
+    
+        double avgLoss = totalLoss / testImages.length;
+        return avgLoss;
+    }
+
+    /**
+     * Calculates the precision of the network
+     * @param testImages a 2d array with test image data
+     * @param testLabels an array with test image labels
+     * @return return the precision of the network as an array
+     */
+    public double[] calculatePrecision(double[][] testImages, int[] testLabels) {
+        int[] truePositive = new int[10];
+        int[] falsePositive = new int[10];
+    
+        for (int i = 0; i < testImages.length; i++) {
+            double[] input = testImages[i];
+            List<Double> output = predict(input);
+    
+            // determines which digit was predicted and increment the correct counter
+            int predictedDigit = getPredictionInt(output);
+            int trueDigit = testLabels[i];
+    
+            if (predictedDigit == trueDigit) {
+                truePositive[predictedDigit]++;
+            } else {
+                falsePositive[predictedDigit]++;
+            }
+        }
+    
+        // array storing the precision of the network
+        double[] precision = new double[10];
+    
+        for (int i = 0; i < 10; i++) {
+            precision[i] = truePositive[i] / (double) (truePositive[i] + falsePositive[i]);
+        }
+    
+        return precision;
+    }
+    
 }
 
 
