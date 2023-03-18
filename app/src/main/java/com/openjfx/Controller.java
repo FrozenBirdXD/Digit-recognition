@@ -1,5 +1,8 @@
 package com.openjfx;
 
+import java.io.IOException;
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -70,6 +73,18 @@ public class Controller {
                 }
             }
 
+            SimpleNetwork network = new SimpleNetwork(784, 256, 10);
+            try {
+                network.readParams();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<Double> result = network.predict(pixels);
+            System.out.println(result.toString());
+            System.out.println(network.getPredictionInt(result));
+
+            writeNum(network.getPredictionInt(result));
+
             int counter = 0;
             for (double number : pixels) {
                 // start a new line every 28 pixels
@@ -88,6 +103,14 @@ public class Controller {
                 System.out.print(n + " ");
             }
         });      
+    }
+
+    // test
+    private void writeNum(int number) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.setFont(javafx.scene.text.Font.font("Arial", 40));
+        gc.fillText("123", 100, 200);
     }
 
     @FXML
