@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -21,8 +23,19 @@ public class Controller {
     private Canvas canvas2;
     @FXML
     private Button clearButton;
+    @FXML
+    private BarChart chart;
 
     private WritableImage snapshot;
+
+    private void updateChart(List<Double> result) {
+        chart.getData().clear();
+        XYChart.Series sr = new XYChart.Series();
+        for (int i = 0; i < 10; i++) {
+            sr.getData().add(new XYChart.Data(String.valueOf(i), result.get(i) * 100));
+        }
+        chart.getData().add(sr);
+    }
 
     public void drawDigit() {
         // when the mouse it pressed on the canvas a circle is drawn
@@ -100,10 +113,14 @@ public class Controller {
                 }
                 counter++;
             }
+            System.out.println("");
 
             for (double n : pixels) {
                 System.out.print(n + " ");
             }
+            System.out.println("");
+
+            updateChart(result);
         });      
     }
 
@@ -149,8 +166,6 @@ public class Controller {
         return downsampled;
     }
     
-
-
     // test
     private void writeNum(int number) {
         GraphicsContext gc = canvas2.getGraphicsContext2D();
