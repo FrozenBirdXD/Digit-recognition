@@ -10,12 +10,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 public class Controller {
     @FXML
     private Canvas canvas;
+    @FXML
+    private Canvas canvas2;
     @FXML
     private Button clearButton;
 
@@ -52,10 +55,9 @@ public class Controller {
             snapshot = canvas.snapshot(params, null);
 
             ImageView imageView = new ImageView(snapshot);
-            imageView.setFitWidth(28);
-            imageView.setFitHeight(28);
             imageView.setPreserveRatio(true);
-            snapshot = imageView.snapshot(null, null);
+
+            snapshot = downsampleImage(imageView.snapshot(null, null));
 
             PixelReader reader = snapshot.getPixelReader();
 
@@ -105,12 +107,57 @@ public class Controller {
         });      
     }
 
+    private WritableImage downsampleImage(WritableImage image) {
+        int width = 28;
+        int height = 28;
+        int blockWidth = 200 / width;
+        int blockHeight = 200 / height;
+    
+        WritableImage downsampled = new WritableImage(width, height);
+        PixelWriter writer = downsampled.getPixelWriter();
+    
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                double redSum = 0;
+                double greenSum = 0;
+                double blueSum = 0;
+                double alphaSum = 0;
+    
+                // iterates over the corresponding 7x7 block in the original image
+                for (int blockY = y * blockHeight; blockY < (y + 1) * blockHeight; blockY++) {
+                    for (int blockX = x * blockWidth; blockX < (x + 1) * blockWidth; blockX++) {
+                        Color color = image.getPixelReader().getColor(blockX, blockY);
+                        redSum += color.getRed();
+                        greenSum += color.getGreen();
+                        blueSum += color.getBlue();
+                        alphaSum += color.getOpacity();
+                    }
+                }
+    
+                // calculates the average color value of the 7x7 block
+                double blockSize = blockWidth * blockHeight;
+                double red = redSum / blockSize;
+                double green = greenSum / blockSize;
+                double blue = blueSum / blockSize;
+                double alpha = alphaSum / blockSize;
+    
+                // sets the pixel in the downsampled image to the average color value
+                writer.setColor(x, y, new Color(red, green, blue, alpha));
+            }
+        }
+    
+        return downsampled;
+    }
+    
+
+
     // test
     private void writeNum(int number) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        GraphicsContext gc = canvas2.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
-        gc.setFont(javafx.scene.text.Font.font("Arial", 40));
-        gc.fillText("123", 100, 200);
+        gc.setFont(javafx.scene.text.Font.font("Arial", 200));
+        gc.clearRect(0, 0, canvas2.getWidth(), canvas2.getHeight());  
+        gc.fillText(String.valueOf(number), 50, 170);
     }
 
     @FXML
