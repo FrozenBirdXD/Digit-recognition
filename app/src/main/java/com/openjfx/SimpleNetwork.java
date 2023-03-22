@@ -166,7 +166,7 @@ public class SimpleNetwork {
      */
     public void saveParams() throws IOException {
         // writes to file
-        FileWriter writer = new FileWriter("weights-biases.txt");
+        FileWriter writer = new FileWriter("app\\src\\weights-biases.txt");
 
         // writes weightsInputHidden params
         for (int i = 0; i < this.weightsInputHidden.getRows(); i++) {
@@ -213,7 +213,7 @@ public class SimpleNetwork {
      */
     public void readParams() throws IOException {
         // reads file
-        Scanner scanner = new Scanner(new File("weights-biases.txt"));
+        Scanner scanner = new Scanner(new File("app\\src\\weights-biases.txt"));
 
         // saves the values of the read parameters for each instance variable
         double[][] values = new double[this.weightsInputHidden.getRows()][this.weightsInputHidden.getColumns()];
