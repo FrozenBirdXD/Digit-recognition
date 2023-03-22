@@ -10,6 +10,7 @@ public class SimpleNetwork {
     // matricies with weights and biases: weightsInputHidden = weights of the connections between the neurons of the Input layer and the Hidden layer ...
     private Matrix weightsInputHidden, weightsHiddenOutput, biasesHidden, biasesOutput;
     private double learningRateEta;
+    private String paramsPath = "app\\src\\weights-biases.txt";
     
     /**
      * Creates a neural network with the given amount of neurons and initializes them with random values
@@ -166,7 +167,7 @@ public class SimpleNetwork {
      */
     public void saveParams() throws IOException {
         // writes to file
-        FileWriter writer = new FileWriter("app\\src\\weights-biases.txt");
+        FileWriter writer = new FileWriter(paramsPath);
 
         // writes weightsInputHidden params
         for (int i = 0; i < this.weightsInputHidden.getRows(); i++) {
@@ -213,7 +214,7 @@ public class SimpleNetwork {
      */
     public void readParams() throws IOException {
         // reads file
-        Scanner scanner = new Scanner(new File("app\\src\\weights-biases.txt"));
+        Scanner scanner = new Scanner(new File(paramsPath));
 
         // saves the values of the read parameters for each instance variable
         double[][] values = new double[this.weightsInputHidden.getRows()][this.weightsInputHidden.getColumns()];
