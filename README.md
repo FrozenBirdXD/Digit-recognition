@@ -43,11 +43,12 @@ mvn install
 5. Run the 'main' method of the class called App to start the program/GUI.
 
 ## Usage
-To use the program run the 'main' method to start. 
-<video src='https://user-images.githubusercontent.com/118717731/226986129-82beb471-878e-4b65-94d1-6e8c0289d05b.gif' width=180/>
-[![Demo Doccou alpha](http://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)
+To use the program run the 'main' method to start. Then just draw a digit!
+
+<img src="https://user-images.githubusercontent.com/118717731/226988076-6a98cee1-2b3d-4dfe-b617-427b4c0166fc.png" alt="1" width="500"/>  <img src="https://user-images.githubusercontent.com/118717731/226989126-b9cf19ff-c53b-4ad6-aa5a-405b18f18f60.png" alt="2" width="500"/>
 
 ## Future Plans
+
 - fix accuracy problem with GUI
 - implement a convolutional neural network (CNN)
 - recognize whole number not just digits
@@ -62,3 +63,4 @@ The following list contains links to great articles and other helpful content I 
 - [Performance of Matrix multiplication in Python, Java and C++ by Martin Thoma](https://martin-thoma.com/matrix-multiplication-python-java-cpp/)
 
 This project is still work in progress but a "pre-release" will be created in the near future.
+
