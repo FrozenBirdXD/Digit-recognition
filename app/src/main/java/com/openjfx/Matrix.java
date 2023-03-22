@@ -60,6 +60,7 @@ public class Matrix {
         }
     }
 
+    // adds each element together if they are of the same size
     public void add(Matrix matrix) {
         if (this.columns != matrix.columns || this.rows != matrix.rows) {
             System.err.println("Matrices don't have the same dimensions!");
