@@ -11,10 +11,10 @@ import java.util.zip.GZIPInputStream;
 
 public class NetworkDataLoader {
 
-    private static final String TRAIN_IMAGES_FILE = "digitrecognition\\src\\train-images-idx3-ubyte.gz";
-    private static final String TRAIN_LABELS_FILE = "digitrecognition\\src\\train-labels-idx1-ubyte.gz";
-    private static final String TEST_IMAGES_FILE = "digitrecognition\\src\\t10k-images-idx3-ubyte.gz";
-    private static final String TEST_LABELS_FILE = "digitrecognition\\src\\t10k-labels-idx1-ubyte.gz";
+    private static final String TRAIN_IMAGES_FILE = "app\\src\\train-images-idx3-ubyte.gz";
+    private static final String TRAIN_LABELS_FILE = "app\\src\\train-labels-idx1-ubyte.gz";
+    private static final String TEST_IMAGES_FILE = "app\\src\\t10k-images-idx3-ubyte.gz";
+    private static final String TEST_LABELS_FILE = "app\\src\\t10k-labels-idx1-ubyte.gz";
     private static final int IMAGE_MAGIC_NUMBER = 2051;
     private static final int LABEL_MAGIC_NUMBER = 2049;
 
