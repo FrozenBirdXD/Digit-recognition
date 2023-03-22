@@ -1,8 +1,10 @@
 package com.openjfx;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -29,12 +31,19 @@ public class Controller {
     private WritableImage snapshot;
 
     private void updateChart(List<Double> result) {
-        chart.getData().clear();
-        XYChart.Series sr = new XYChart.Series();
-        for (int i = 0; i < 10; i++) {
-            sr.getData().add(new XYChart.Data(String.valueOf(i), result.get(i) * 100));
+            ObservableList<XYChart.Series<String, Double>> data = chart.getData();
+        if (data.isEmpty()) {
+            XYChart.Series<String, Double> sr = new XYChart.Series<>();
+            for (int i = 0; i < 10; i++) {
+                sr.getData().add(new XYChart.Data<>(String.valueOf(i), result.get(i) * 100));
+            }
+            chart.getData().add(sr);
+        } else {
+            XYChart.Series<String, Double> sr = data.get(0);
+            for (int i = 0; i < 10; i++) {
+                sr.getData().get(i).setYValue(result.get(i) * 100);
+            }
         }
-        chart.getData().add(sr);
     }
 
     public void drawDigit() {
@@ -178,6 +187,8 @@ public class Controller {
     @FXML
     private void onClearButtonClick() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());     
+        GraphicsContext gc2 = canvas2.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc2.clearRect(0, 0, canvas2.getWidth(), canvas2.getHeight());
     }
 }
